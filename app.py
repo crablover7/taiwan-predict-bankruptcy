@@ -11,26 +11,26 @@ st.markdown("Enter financial details below to predict the risk of bankruptcy.")
 
 # Feature names from the image
 feature_names = [
-    "Persistent EPS in the Last Four Seasons",
-    "Non-industry income and expenditure/revenue",
-    "Borrowing dependency",
-    "Total debt/Total net worth",
-    "Net Income to Total Assets",
-    "Current Liability to Assets",
-    "Net worth/Assets",
-    "Quick Ratio",
-    "ROA(C) before interest and depreciation before interest",
-    "ROA(B) before interest and depreciation after tax",
-    "Equity to Liability",
-    "Net Income to Stockholder's Equity",
-    "Revenue Per Share (Yuan ¥)",
-    "Retained Earnings to Total Assets",
-    "Operating Profit Rate",
-    "Degree of Financial Leverage (DFL)",
-    "ROA(A) before interest and % after tax",
-    "Debt ratio %",
-    "Accounts Receivable Turnover",
-    "Net Value Per Share (C)"
+    " Persistent EPS in the Last Four Seasons",
+    " Non-industry income and expenditure/revenue",
+    " Borrowing dependency",
+    " Total debt/Total net worth",
+    " Net Income to Total Assets",
+    " Current Liability to Assets",
+    " Net worth/Assets",
+    " Quick Ratio",
+    " ROA(C) before interest and depreciation before interest",
+    " ROA(B) before interest and depreciation after tax",
+    " Equity to Liability",
+    " Net Income to Stockholder's Equity",
+    " Revenue Per Share (Yuan ¥)",
+    " Retained Earnings to Total Assets",
+    " Operating Profit Rate",
+    " Degree of Financial Leverage (DFL)",
+    " ROA(A) before interest and % after tax",
+    " Debt ratio %",
+    " Accounts Receivable Turnover",
+    " Net Value Per Share (C)"
 ]
 
 # Create input fields dynamically
