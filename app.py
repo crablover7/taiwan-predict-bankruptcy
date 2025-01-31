@@ -1,6 +1,7 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
 
 # Load the trained model
 model = joblib.load("xgb_bankruptcy_model.pkl")
@@ -8,15 +9,38 @@ model = joblib.load("xgb_bankruptcy_model.pkl")
 st.title("📊 Bankruptcy Prediction Dashboard")
 st.markdown("Enter financial details below to predict the risk of bankruptcy.")
 
-# Input fields
-feature_1 = st.number_input("Enter feature 1 value:", value=0.0)
-feature_2 = st.number_input("Enter feature 2 value:", value=0.0)
-feature_3 = st.number_input("Enter feature 3 value:", value=0.0)
-feature_4 = st.number_input("Enter feature 4 value:", value=0.0)
-feature_5 = st.number_input("Enter feature 5 value:", value=0.0)
+# Feature names from the image
+feature_names = [
+    "Persistent EPS in the Last Four Seasons",
+    "Non-industry income and expenditure/revenue",
+    "Borrowing dependency",
+    "Total debt/Total net worth",
+    "Net Income to Total Assets",
+    "Current Liability to Assets",
+    "Net worth/Assets",
+    "Quick Ratio",
+    "ROA(C) before interest and depreciation before interest",
+    "ROA(B) before interest and depreciation after tax",
+    "Equity to Liability",
+    "Net Income to Stockholder's Equity",
+    "Revenue Per Share (Yuan ¥)",
+    "Retained Earnings to Total Assets",
+    "Operating Profit Rate",
+    "Degree of Financial Leverage (DFL)",
+    "ROA(A) before interest and % after tax",
+    "Debt ratio %",
+    "Accounts Receivable Turnover",
+    "Net Value Per Share (C)"
+]
+
+# Create input fields dynamically
+user_inputs = []
+for feature in feature_names:
+    value = st.number_input(f"{feature}:", value=0.0)
+    user_inputs.append(value)
 
 # Convert inputs to numpy array
-input_data = np.array([[feature_1, feature_2, feature_3, feature_4, feature_5]])
+input_data = np.array([user_inputs]).astype(float)
 
 # Predict on user input
 if st.button("Predict Bankruptcy Risk"):
