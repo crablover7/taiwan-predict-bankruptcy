@@ -1,53 +1,38 @@
 import streamlit as st
-import pickle
-import numpy as np
+import pandas as pd
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
-# Load trained model
-with open("xgb_model.pkl", "rb") as file:
-    model = pickle.load(file)
+st.title("Bankruptcy Prediction with XGBoost")
 
-# Define features
-selected_feature_names = [
-    "Persistent EPS in the Last Four Seasons",
-    "Non-industry income and expenditure/revenue",
-    "Borrowing dependency",
-    "Total debt/Total net worth",
-    "Net Income to Total Assets",
-    "Current Liability to Assets",
-    "Net worth/Assets",
-    "Quick Ratio",
-    "ROA(C) before interest and depreciation before interest",
-    "ROA(B) before interest and depreciation after tax",
-    "Equity to Liability",
-    "Net Income to Stockholder's Equity",
-    "Revenue Per Share (Yuan ¥)",
-    "Retained Earnings to Total Assets",
-    "Operating Profit Rate",
-    "Degree of Financial Leverage (DFL)",
-    "ROA(A) before interest and % after tax",
-    "Debt ratio %",
-    "Accounts Receivable Turnover",
-    "Net Value Per Share (C)"
-]
+uploaded_file = st.file_uploader("Upload your dataset (CSV format)", type=["csv"])
 
-# Streamlit UI
-st.title("Bankruptcy Prediction App")
-st.write("Enter financial details below to predict if a company is at risk of bankruptcy.")
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.write("### Dataset Preview")
+    st.dataframe(df.head())
 
-# User input form
-user_input = []
-for feature in selected_feature_names:
-    value = st.number_input(f"{feature}:", value=0.0, format="%.10f")
-    user_input.append(value)
+    X = df.iloc[:, :-1]
+    y = df.iloc[:, -1].astype(int)
 
-input_data = np.array(user_input).reshape(1, -1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Predict Button
-if st.button("Predict"):
-    prediction = model.predict(input_data)
-    probability = model.predict_proba(input_data)[0][1]  # Probability of bankruptcy
+    model = XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+    model.fit(X_train, y_train)
 
-    if prediction[0] == 1:
-        st.error(f"⚠️ The company is **at risk of bankruptcy** with probability {probability:.10f}.")
-    else:
-        st.success(f"✅ The company is **not at risk of bankruptcy** with probability {1 - probability:.10f}.")
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    st.write("### Model Accuracy")
+    st.success(f"{accuracy:.4f}")
+
+    st.write("### Make a Prediction")
+    input_data = []
+    for col in X.columns:
+        value = st.number_input(f"{col}", value=float(X[col].mean()))
+        input_data.append(value)
+
+    if st.button("Predict"):
+        prediction = model.predict([input_data])
+        st.write(f"**Prediction:** {'Bankrupt' if prediction[0] == 1 else 'Not Bankrupt'}")
