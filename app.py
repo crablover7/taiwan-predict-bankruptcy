@@ -37,7 +37,7 @@ st.write("Enter financial details below to predict if a company is at risk of ba
 # User input form
 user_input = []
 for feature in selected_feature_names:
-    value = st.number_input(f"{feature}:", value=0.0)
+    value = st.number_input(f"{feature}:", value=0.0, format="%.10f")
     user_input.append(value)
 
 input_data = np.array(user_input).reshape(1, -1)
