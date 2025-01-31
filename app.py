@@ -48,6 +48,6 @@ if st.button("Predict"):
     probability = model.predict_proba(input_data)[0][1]  # Probability of bankruptcy
 
     if prediction[0] == 1:
-        st.error(f"⚠️ The company is **at risk of bankruptcy** with probability {probability:.2f}.")
+        st.error(f"⚠️ The company is **at risk of bankruptcy** with probability {probability:.10f}.")
     else:
-        st.success(f"✅ The company is **not at risk of bankruptcy** with probability {1 - probability:.2f}.")
+        st.success(f"✅ The company is **not at risk of bankruptcy** with probability {1 - probability:.10f}.")
